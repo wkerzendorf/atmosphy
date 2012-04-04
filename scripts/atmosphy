@@ -2,6 +2,7 @@
 
 import argparse
 
+
 usage="Usage: %prog teff logg feh [options]"
 
 parser=argparse.ArgumentParser(description='Interpolate stellar atmospheres for usage in spectrum synthesis codes like MOOG.')
@@ -28,7 +29,7 @@ parser.add_argument("-feh",
                     "\ne.g. -feh -2 -1 0.1",
                     nargs='+',
                     default=0.0,
-                     type=float)
+                    type=float)
                      
 
 #parser.add_argument("-k","--microturb",
@@ -96,16 +97,16 @@ if __name__ == '__main__':
     for param in paramGrid:
         #creating a new filename
         if args.fname == None or len(paramGrid) > 1:
-            fname = 't%dg%.2fm%.2fk%.2fa%.2f.model'%(param[0], param[1], param[2], args.k, params[3])
+            fname = 't%dg%.2fm%.2fk%.2fa%.2f.model'%(param[0], param[1], param[2], args.k, param[3])
         else:
             fname = args.fname
         print 'Creating file %s' %fname
         try:
-            deck = ainterp.interpModelGrid(args.modelgrid, param[0], param[1], param[2], args.k, params[3])
+            deck = ainterp.interpModelGrid(args.modelgrid, param[0], param[1], param[2], args.k, param[3])
         except ainterp.OutOfBoundsError:
             warningMsg = ("Warning: Could not create atmosphere with Teff %.2f logg %.2f [Fe/H] %.2f micro %.2f alpha %.2f. \n"
                     "The requested point lies outside the grid of model atmospheres")
-            print warningMsg % (param[0], param[1], param[2], args.k, params[3])
+            print warningMsg % (param[0], param[1], param[2], args.k, param[3])
             continue
                 
         formattedDeck = fileio.formatMOOG(param[0], param[1], param[2], deck)
